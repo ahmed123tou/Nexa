@@ -1,0 +1,1570 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Nexa — Chat & Hangout</title>
+
+<style>
+*{box-sizing:border-box}
+
+:root{
+    --bg:#070707;
+    --panel:#0e0e10;
+    --panel2:#121216;
+    --border:#24242a;
+    --text:#f5f5f5;
+    --muted:#8b8b95;
+    --accent:#7c5cff;
+    --accent2:#9b87ff;
+    --danger:#ff4f68;
+    --success:#45d483;
+}
+
+body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    overflow:hidden;
+}
+
+/* ================= LOGIN ================= */
+
+#authScreen{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        radial-gradient(circle at 50% 20%,rgba(124,92,255,.18),transparent 35%),
+        #070707;
+    z-index:100;
+}
+
+.authBox{
+    width:420px;
+    max-width:92%;
+    background:rgba(14,14,16,.94);
+    border:1px solid #292930;
+    border-radius:18px;
+    padding:34px;
+    box-shadow:0 25px 80px rgba(0,0,0,.55);
+}
+
+.logo{
+    text-align:center;
+    font-size:38px;
+    font-weight:800;
+    letter-spacing:-2px;
+    margin-bottom:5px;
+}
+
+.logo span{
+    color:var(--accent);
+}
+
+.authSubtitle{
+    text-align:center;
+    color:var(--muted);
+    margin-bottom:28px;
+}
+
+.authTabs{
+    display:flex;
+    background:#09090b;
+    padding:4px;
+    border-radius:10px;
+    margin-bottom:22px;
+}
+
+.authTabs button{
+    flex:1;
+    border:0;
+    background:transparent;
+    color:var(--muted);
+    padding:11px;
+    border-radius:7px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.authTabs button.active{
+    background:#1b1924;
+    color:white;
+}
+
+.field{
+    margin-bottom:15px;
+}
+
+.field label{
+    display:block;
+    color:#b9b9c2;
+    font-size:13px;
+    margin-bottom:7px;
+}
+
+.field input{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid #292930;
+    border-radius:9px;
+    background:#09090b;
+    color:white;
+    outline:none;
+    font-size:14px;
+}
+
+.field input:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(124,92,255,.12);
+}
+
+.authButton{
+    width:100%;
+    border:0;
+    padding:13px;
+    margin-top:4px;
+    border-radius:9px;
+    background:var(--accent);
+    color:white;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.authButton:hover{
+    background:var(--accent2);
+}
+
+.authError{
+    min-height:20px;
+    color:var(--danger);
+    font-size:13px;
+    margin:10px 0 0;
+    text-align:center;
+}
+
+.authInfo{
+    text-align:center;
+    color:#666671;
+    font-size:12px;
+    margin-top:18px;
+    line-height:1.5;
+}
+
+/* ================= APP ================= */
+
+#app{
+    display:none;
+    height:100vh;
+    width:100vw;
+}
+
+.sidebar{
+    width:250px;
+    height:100vh;
+    background:#0b0b0d;
+    border-right:1px solid var(--border);
+    display:flex;
+    flex-direction:column;
+}
+
+.sidebarTop{
+    height:62px;
+    padding:0 18px;
+    display:flex;
+    align-items:center;
+    border-bottom:1px solid var(--border);
+}
+
+.nexaLogo{
+    font-size:23px;
+    font-weight:800;
+    letter-spacing:-1px;
+}
+
+.nexaLogo span{
+    color:var(--accent);
+}
+
+.serverList{
+    padding:12px 9px;
+    flex:1;
+    overflow:auto;
+}
+
+.server{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:11px;
+    margin-bottom:5px;
+    border-radius:9px;
+    cursor:pointer;
+    color:#bdbdc6;
+}
+
+.server:hover,
+.server.active{
+    background:#17171b;
+    color:white;
+}
+
+.serverIcon{
+    width:36px;
+    height:36px;
+    border-radius:10px;
+    background:#18181d;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+}
+
+.server.active .serverIcon{
+    background:var(--accent);
+}
+
+.sidebarBottom{
+    border-top:1px solid var(--border);
+    padding:12px;
+}
+
+.userCard{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px;
+    border-radius:10px;
+}
+
+.avatar{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#7c5cff,#b45cff);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+}
+
+.userDetails{
+    min-width:0;
+    flex:1;
+}
+
+.userName{
+    font-size:13px;
+    font-weight:700;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.userStatus{
+    color:var(--success);
+    font-size:11px;
+}
+
+.logout{
+    border:0;
+    background:transparent;
+    color:#777780;
+    cursor:pointer;
+    font-size:17px;
+}
+
+.logout:hover{
+    color:var(--danger);
+}
+
+/* ================= CHANNELS ================= */
+
+.channelSidebar{
+    width:245px;
+    height:100vh;
+    background:#101012;
+    border-right:1px solid var(--border);
+    display:flex;
+    flex-direction:column;
+}
+
+.channelHeader{
+    height:62px;
+    display:flex;
+    align-items:center;
+    padding:0 18px;
+    font-weight:700;
+    border-bottom:1px solid var(--border);
+}
+
+.channelTitle{
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+.channels{
+    padding:15px 10px;
+}
+
+.category{
+    color:#707079;
+    font-size:11px;
+    font-weight:800;
+    margin:7px 8px;
+    text-transform:uppercase;
+}
+
+.channel{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 10px;
+    border-radius:7px;
+    color:#8e8e98;
+    cursor:pointer;
+    margin-bottom:2px;
+}
+
+.channel:hover{
+    background:#19191d;
+    color:#ddd;
+}
+
+.channel.active{
+    background:#202027;
+    color:white;
+}
+
+.channelIcon{
+    font-size:16px;
+}
+
+/* ================= CHAT ================= */
+
+.chat{
+    flex:1;
+    min-width:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    background:#0c0c0e;
+}
+
+.chatHeader{
+    height:62px;
+    flex-shrink:0;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    padding:0 20px;
+    gap:12px;
+}
+
+.hash{
+    color:#777780;
+    font-size:25px;
+}
+
+.chatHeaderName{
+    font-weight:700;
+}
+
+.chatHeaderDescription{
+    color:#666670;
+    font-size:12px;
+    border-left:1px solid #29292e;
+    padding-left:12px;
+}
+
+.messages{
+    flex:1;
+    overflow-y:auto;
+    padding:20px;
+}
+
+.welcome{
+    padding:15px 0 25px;
+}
+
+.welcomeIcon{
+    width:60px;
+    height:60px;
+    background:#18181e;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:27px;
+    margin-bottom:12px;
+}
+
+.welcome h1{
+    margin:0 0 6px;
+    font-size:25px;
+}
+
+.welcome p{
+    margin:0;
+    color:#777780;
+}
+
+.message{
+    display:flex;
+    gap:12px;
+    padding:9px 7px;
+    border-radius:7px;
+}
+
+.message:hover{
+    background:#101014;
+}
+
+.messageAvatar{
+    flex-shrink:0;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#7c5cff,#b45cff);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    font-weight:800;
+}
+
+.messageBody{
+    min-width:0;
+}
+
+.messageTop{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.messageName{
+    font-size:14px;
+    font-weight:700;
+}
+
+.messageTime{
+    font-size:10px;
+    color:#55555e;
+}
+
+.messageText{
+    color:#d4d4d9;
+    font-size:14px;
+    margin-top:3px;
+    white-space:pre-wrap;
+    overflow-wrap:anywhere;
+}
+
+.messageInputArea{
+    padding:12px 18px 18px;
+}
+
+.messageForm{
+    display:flex;
+    gap:8px;
+    background:#17171b;
+    border:1px solid #25252b;
+    border-radius:10px;
+    padding:5px;
+}
+
+.messageInput{
+    flex:1;
+    min-width:0;
+    background:transparent;
+    border:0;
+    outline:0;
+    color:white;
+    padding:10px;
+    font-size:14px;
+}
+
+.sendButton{
+    border:0;
+    background:var(--accent);
+    color:white;
+    border-radius:7px;
+    padding:0 17px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.sendButton:hover{
+    background:var(--accent2);
+}
+
+/* ================= RIGHT SIDE ================= */
+
+.members{
+    width:220px;
+    height:100vh;
+    background:#0b0b0d;
+    border-left:1px solid var(--border);
+    padding:18px 12px;
+}
+
+.membersTitle{
+    color:#777780;
+    font-size:11px;
+    font-weight:800;
+    margin:5px 8px 12px;
+    text-transform:uppercase;
+}
+
+.member{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px;
+    border-radius:8px;
+}
+
+.member:hover{
+    background:#151519;
+}
+
+.memberAvatar{
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:#25252c;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:700;
+}
+
+.memberName{
+    font-size:13px;
+    color:#bbbcc4;
+}
+
+.onlineDot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--success);
+    margin-left:auto;
+}
+
+/* ================= TOAST ================= */
+
+#toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:#18181c;
+    border:1px solid #2c2c33;
+    padding:12px 16px;
+    border-radius:9px;
+    box-shadow:0 10px 35px rgba(0,0,0,.4);
+    transform:translateY(20px);
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+    z-index:200;
+    font-size:13px;
+}
+
+#toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:900px){
+    .members{
+        display:none;
+    }
+}
+
+@media(max-width:650px){
+    .sidebar{
+        width:70px;
+    }
+
+    .sidebarTop{
+        justify-content:center;
+        padding:0;
+    }
+
+    .nexaLogo{
+        font-size:0;
+    }
+
+    .nexaLogo span{
+        font-size:22px;
+    }
+
+    .server{
+        justify-content:center;
+    }
+
+    .serverName,
+    .userDetails,
+    .logout{
+        display:none;
+    }
+
+    .channelSidebar{
+        width:190px;
+    }
+
+    .chatHeaderDescription{
+        display:none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= AUTH ================= -->
+
+<div id="authScreen">
+
+    <div class="authBox">
+
+        <div class="logo">Ne<span>xa</span></div>
+
+        <div class="authSubtitle">
+            Chat. Hang out. Connect.
+        </div>
+
+        <div class="authTabs">
+            <button id="loginTab" class="active" onclick="showLogin()">
+                Log In
+            </button>
+
+            <button id="registerTab" onclick="showRegister()">
+                Create Account
+            </button>
+        </div>
+
+        <form id="authForm" onsubmit="handleAuth(event)">
+
+            <div class="field">
+                <label>Username</label>
+                <input
+                    id="username"
+                    type="text"
+                    maxlength="24"
+                    autocomplete="username"
+                    placeholder="Enter your username"
+                    required
+                >
+            </div>
+
+            <div class="field">
+                <label>Password</label>
+                <input
+                    id="password"
+                    type="password"
+                    maxlength="100"
+                    autocomplete="current-password"
+                    placeholder="Enter your password"
+                    required
+                >
+            </div>
+
+            <button class="authButton" id="authButton">
+                Log In
+            </button>
+
+            <div class="authError" id="authError"></div>
+
+        </form>
+
+        <div class="authInfo">
+            Your account is stored locally in this browser.<br>
+            No external login service is used.
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= APP ================= -->
+
+<div id="app">
+
+    <!-- SERVERS -->
+
+    <aside class="sidebar">
+
+        <div class="sidebarTop">
+            <div class="nexaLogo">Ne<span>xa</span></div>
+        </div>
+
+        <div class="serverList">
+
+            <div class="server active">
+                <div class="serverIcon">N</div>
+                <div class="serverName">Nexa Community</div>
+            </div>
+
+            <div class="server">
+                <div class="serverIcon">+</div>
+                <div class="serverName">Add Server</div>
+            </div>
+
+        </div>
+
+        <div class="sidebarBottom">
+
+            <div class="userCard">
+
+                <div class="avatar" id="userAvatar">
+                    N
+                </div>
+
+                <div class="userDetails">
+
+                    <div class="userName" id="currentUsername">
+                        User
+                    </div>
+
+                    <div class="userStatus">
+                        ● Online
+                    </div>
+
+                </div>
+
+                <button class="logout" onclick="logout()" title="Log out">
+                    ↪
+                </button>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- CHANNELS -->
+
+    <aside class="channelSidebar">
+
+        <div class="channelHeader">
+            <div class="channelTitle">
+                Nexa Community
+            </div>
+        </div>
+
+        <div class="channels">
+
+            <div class="category">
+                Text Channels
+            </div>
+
+            <div class="channel active" onclick="switchChannel('general')">
+                <span class="channelIcon">#</span>
+                <span>general</span>
+            </div>
+
+            <div class="channel" onclick="switchChannel('chat')">
+                <span class="channelIcon">#</span>
+                <span>chat</span>
+            </div>
+
+            <div class="channel" onclick="switchChannel('memes')">
+                <span class="channelIcon">#</span>
+                <span>memes</span>
+            </div>
+
+            <div class="category" style="margin-top:22px">
+                Information
+            </div>
+
+            <div class="channel" onclick="switchChannel('welcome')">
+                <span class="channelIcon">#</span>
+                <span>welcome</span>
+            </div>
+
+            <div class="channel" onclick="switchChannel('rules')">
+                <span class="channelIcon">#</span>
+                <span>rules</span>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- CHAT -->
+
+    <main class="chat">
+
+        <header class="chatHeader">
+
+            <div class="hash">#</div>
+
+            <div class="chatHeaderName" id="channelName">
+                general
+            </div>
+
+            <div class="chatHeaderDescription" id="channelDescription">
+                Welcome to Nexa.
+            </div>
+
+        </header>
+
+        <div class="messages" id="messages"></div>
+
+        <div class="messageInputArea">
+
+            <form class="messageForm" onsubmit="sendMessage(event)">
+
+                <input
+                    class="messageInput"
+                    id="messageInput"
+                    maxlength="1000"
+                    placeholder="Message #general"
+                    autocomplete="off"
+                >
+
+                <button class="sendButton">
+                    Send
+                </button>
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+    <!-- MEMBERS -->
+
+    <aside class="members">
+
+        <div class="membersTitle">
+            Online — <span id="memberCount">1</span>
+        </div>
+
+        <div id="memberList"></div>
+
+    </aside>
+
+</div>
+
+<div id="toast"></div>
+
+
+<script>
+
+/* =========================================================
+   NEXA LOCAL ACCOUNT SYSTEM
+   Everything is contained inside this one HTML file.
+   ========================================================= */
+
+
+/* ---------------- STORAGE ---------------- */
+
+const USERS_KEY = "nexa_users_v1";
+const SESSION_KEY = "nexa_session_v1";
+const MESSAGES_KEY = "nexa_messages_v1";
+
+function getUsers(){
+    try{
+        return JSON.parse(localStorage.getItem(USERS_KEY)) || {};
+    }catch{
+        return {};
+    }
+}
+
+function saveUsers(users){
+    localStorage.setItem(USERS_KEY,JSON.stringify(users));
+}
+
+function getSession(){
+    return localStorage.getItem(SESSION_KEY);
+}
+
+function setSession(username){
+    localStorage.setItem(SESSION_KEY,username);
+}
+
+function clearSession(){
+    localStorage.removeItem(SESSION_KEY);
+}
+
+
+/* ---------------- APP STATE ---------------- */
+
+let currentUser = null;
+let currentChannel = "general";
+
+const channelInfo = {
+    general:{
+        description:"Welcome to Nexa.",
+        welcome:"Welcome to the Nexa community! 🎉"
+    },
+    chat:{
+        description:"Talk with the community.",
+        welcome:"This is the main chat channel. Say hello! 👋"
+    },
+    memes:{
+        description:"Share your funniest memes.",
+        welcome:"Welcome to memes. 😂"
+    },
+    welcome:{
+        description:"Welcome to Nexa.",
+        welcome:"Welcome to Nexa! We're glad you're here. ✨"
+    },
+    rules:{
+        description:"Please read the rules.",
+        welcome:"Be respectful and have fun."
+    }
+};
+
+
+/* ---------------- AUTH UI ---------------- */
+
+let authMode = "login";
+
+function showLogin(){
+
+    authMode = "login";
+
+    document.getElementById("loginTab").classList.add("active");
+    document.getElementById("registerTab").classList.remove("active");
+
+    document.getElementById("authButton").textContent = "Log In";
+
+    document.getElementById("password").autocomplete = "current-password";
+
+    clearAuthError();
+}
+
+function showRegister(){
+
+    authMode = "register";
+
+    document.getElementById("registerTab").classList.add("active");
+    document.getElementById("loginTab").classList.remove("active");
+
+    document.getElementById("authButton").textContent = "Create Account";
+
+    document.getElementById("password").autocomplete = "new-password";
+
+    clearAuthError();
+}
+
+function showAuthError(message){
+
+    document.getElementById("authError").textContent = message;
+}
+
+function clearAuthError(){
+
+    document.getElementById("authError").textContent = "";
+}
+
+
+/* ---------------- PASSWORD HASH ---------------- */
+
+/*
+   The browser's Web Crypto API is used so passwords
+   aren't stored as plain text.
+*/
+
+async function hashPassword(password){
+
+    const data = new TextEncoder().encode(password);
+
+    const hash = await crypto.subtle.digest(
+        "SHA-256",
+        data
+    );
+
+    return Array.from(new Uint8Array(hash))
+        .map(b => b.toString(16).padStart(2,"0"))
+        .join("");
+}
+
+
+/* ---------------- AUTH HANDLER ---------------- */
+
+async function handleAuth(event){
+
+    event.preventDefault();
+
+    clearAuthError();
+
+    const usernameInput =
+        document.getElementById("username");
+
+    const passwordInput =
+        document.getElementById("password");
+
+    const username =
+        usernameInput.value.trim();
+
+    const password =
+        passwordInput.value;
+
+    if(username.length < 3){
+
+        showAuthError(
+            "Username must be at least 3 characters."
+        );
+
+        return;
+    }
+
+    if(username.length > 24){
+
+        showAuthError(
+            "Username must be 24 characters or less."
+        );
+
+        return;
+    }
+
+    if(!/^[a-zA-Z0-9_]+$/.test(username)){
+
+        showAuthError(
+            "Use only letters, numbers and underscores."
+        );
+
+        return;
+    }
+
+    if(password.length < 6){
+
+        showAuthError(
+            "Password must be at least 6 characters."
+        );
+
+        return;
+    }
+
+    const users = getUsers();
+
+    const key = username.toLowerCase();
+
+    if(authMode === "register"){
+
+        if(users[key]){
+
+            showAuthError(
+                "That username already exists."
+            );
+
+            return;
+        }
+
+        const passwordHash =
+            await hashPassword(password);
+
+        users[key] = {
+            username:username,
+            password:passwordHash,
+            createdAt:Date.now()
+        };
+
+        saveUsers(users);
+
+        setSession(username);
+
+        usernameInput.value = "";
+        passwordInput.value = "";
+
+        openApp(username);
+
+        showToast("Account created successfully!");
+
+    }else{
+
+        if(!users[key]){
+
+            showAuthError(
+                "Username or password is incorrect."
+            );
+
+            return;
+        }
+
+        const passwordHash =
+            await hashPassword(password);
+
+        if(users[key].password !== passwordHash){
+
+            showAuthError(
+                "Username or password is incorrect."
+            );
+
+            return;
+        }
+
+        setSession(users[key].username);
+
+        usernameInput.value = "";
+        passwordInput.value = "";
+
+        openApp(users[key].username);
+
+        showToast("Welcome back, " + users[key].username + "!");
+    }
+}
+
+
+/* ---------------- LOGOUT ---------------- */
+
+function logout(){
+
+    clearSession();
+
+    currentUser = null;
+
+    document.getElementById("app").style.display = "none";
+    document.getElementById("authScreen").style.display = "flex";
+
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+
+    showLogin();
+
+    showToast("Logged out.");
+}
+
+
+/* ---------------- OPEN APP ---------------- */
+
+function openApp(username){
+
+    currentUser = username;
+
+    document.getElementById("authScreen").style.display = "none";
+    document.getElementById("app").style.display = "flex";
+
+    document.getElementById("currentUsername").textContent =
+        username;
+
+    document.getElementById("userAvatar").textContent =
+        getInitials(username);
+
+    updateMemberList();
+
+    switchChannel("general");
+}
+
+
+/* ---------------- INITIALS ---------------- */
+
+function getInitials(name){
+
+    return name
+        .split("_")
+        .map(x => x.charAt(0))
+        .join("")
+        .substring(0,2)
+        .toUpperCase();
+}
+
+
+/* =========================================================
+   CHAT SYSTEM
+   ========================================================= */
+
+function getMessages(){
+
+    try{
+
+        return JSON.parse(
+            localStorage.getItem(MESSAGES_KEY)
+        ) || {};
+
+    }catch{
+
+        return {};
+    }
+}
+
+function saveMessages(messages){
+
+    localStorage.setItem(
+        MESSAGES_KEY,
+        JSON.stringify(messages)
+    );
+}
+
+
+/* ---------------- SWITCH CHANNEL ---------------- */
+
+function switchChannel(channel){
+
+    currentChannel = channel;
+
+    document.getElementById("channelName").textContent =
+        channel;
+
+    document.getElementById("channelDescription").textContent =
+        channelInfo[channel]?.description || "";
+
+    document.getElementById("messageInput").placeholder =
+        "Message #" + channel;
+
+    document.querySelectorAll(".channel")
+        .forEach(el => el.classList.remove("active"));
+
+    document.querySelectorAll(".channel")
+        .forEach(el => {
+
+            const text = el.innerText.trim();
+
+            if(text === channel){
+                el.classList.add("active");
+            }
+
+        });
+
+    renderMessages();
+}
+
+
+/* ---------------- SEND MESSAGE ---------------- */
+
+function sendMessage(event){
+
+    event.preventDefault();
+
+    if(!currentUser) return;
+
+    const input =
+        document.getElementById("messageInput");
+
+    const text =
+        input.value.trim();
+
+    if(!text) return;
+
+    const messages = getMessages();
+
+    if(!messages[currentChannel]){
+        messages[currentChannel] = [];
+    }
+
+    messages[currentChannel].push({
+
+        id:Date.now() + Math.random(),
+
+        username:currentUser,
+
+        text:text,
+
+        time:new Date().toISOString()
+
+    });
+
+    /*
+       Keep local storage from growing forever.
+    */
+
+    if(messages[currentChannel].length > 300){
+
+        messages[currentChannel] =
+            messages[currentChannel].slice(-300);
+    }
+
+    saveMessages(messages);
+
+    input.value = "";
+
+    renderMessages();
+}
+
+
+/* ---------------- RENDER MESSAGES ---------------- */
+
+function renderMessages(){
+
+    const container =
+        document.getElementById("messages");
+
+    const messages = getMessages();
+
+    const list =
+        messages[currentChannel] || [];
+
+    container.innerHTML = "";
+
+    const welcome = document.createElement("div");
+
+    welcome.className = "welcome";
+
+    welcome.innerHTML = `
+        <div class="welcomeIcon">#</div>
+        <h1>Welcome to #${escapeHTML(currentChannel)}</h1>
+        <p>${escapeHTML(
+            channelInfo[currentChannel]?.welcome || ""
+        )}</p>
+    `;
+
+    container.appendChild(welcome);
+
+
+    list.forEach(message => {
+
+        const row =
+            document.createElement("div");
+
+        row.className = "message";
+
+        const avatar =
+            document.createElement("div");
+
+        avatar.className = "messageAvatar";
+
+        avatar.textContent =
+            getInitials(message.username);
+
+        const body =
+            document.createElement("div");
+
+        body.className = "messageBody";
+
+        const top =
+            document.createElement("div");
+
+        top.className = "messageTop";
+
+        const name =
+            document.createElement("span");
+
+        name.className = "messageName";
+
+        name.textContent =
+            message.username;
+
+        const time =
+            document.createElement("span");
+
+        time.className = "messageTime";
+
+        time.textContent =
+            formatTime(message.time);
+
+        const text =
+            document.createElement("div");
+
+        text.className = "messageText";
+
+        text.textContent =
+            message.text;
+
+        top.appendChild(name);
+        top.appendChild(time);
+
+        body.appendChild(top);
+        body.appendChild(text);
+
+        row.appendChild(avatar);
+        row.appendChild(body);
+
+        container.appendChild(row);
+
+    });
+
+    container.scrollTop =
+        container.scrollHeight;
+}
+
+
+/* ---------------- TIME ---------------- */
+
+function formatTime(time){
+
+    const date =
+        new Date(time);
+
+    return date.toLocaleTimeString(
+        [],
+        {
+            hour:"2-digit",
+            minute:"2-digit"
+        }
+    );
+}
+
+
+/* ---------------- HTML ESCAPE ---------------- */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+
+/* =========================================================
+   LOCAL ONLINE MEMBER DISPLAY
+   ========================================================= */
+
+function updateMemberList(){
+
+    const list =
+        document.getElementById("memberList");
+
+    list.innerHTML = "";
+
+    if(!currentUser) return;
+
+    const member =
+        document.createElement("div");
+
+    member.className = "member";
+
+    member.innerHTML = `
+        <div class="memberAvatar">
+            ${escapeHTML(getInitials(currentUser))}
+        </div>
+
+        <div class="memberName">
+            ${escapeHTML(currentUser)}
+        </div>
+
+        <div class="onlineDot"></div>
+    `;
+
+    list.appendChild(member);
+
+    document.getElementById("memberCount")
+        .textContent = "1";
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+let toastTimer;
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        },2500);
+}
+
+
+/* =========================================================
+   STARTUP
+   ========================================================= */
+
+window.addEventListener("load",function(){
+
+    const session =
+        getSession();
+
+    if(session){
+
+        const users =
+            getUsers();
+
+        const key =
+            session.toLowerCase();
+
+        if(users[key]){
+
+            openApp(users[key].username);
+
+            return;
+        }
+
+        clearSession();
+    }
+
+    showLogin();
+});
+
+
+/* =========================================================
+   ENTER KEY / SHORTCUT
+   ========================================================= */
+
+document.addEventListener("keydown",function(event){
+
+    if(
+        event.key === "Enter" &&
+        document.activeElement?.id === "messageInput"
+    ){
+        return;
+    }
+
+    if(
+        event.key === "Escape" &&
+        currentUser
+    ){
+        document.getElementById("messageInput").blur();
+    }
+
+});
+
+
+/* =========================================================
+   AUTO UPDATE IF ANOTHER TAB CHANGES LOCAL STORAGE
+   ========================================================= */
+
+window.addEventListener("storage",function(event){
+
+    if(event.key === MESSAGES_KEY){
+
+        if(currentUser){
+            renderMessages();
+        }
+
+    }
+
+    if(event.key === SESSION_KEY){
+
+        if(!getSession() && currentUser){
+
+            currentUser = null;
+
+            document.getElementById("app").style.display = "none";
+            document.getElementById("authScreen").style.display = "flex";
+
+        }
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
+```
