@@ -1,4 +1,4 @@
-NEXA V2 — clean single-file version
+NEXA V1.0 — clean single-file version
 
 No Supabase. No email. No external account backend.
 
