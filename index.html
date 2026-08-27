@@ -1,886 +1,847 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nexa — Chat & Hangout</title>
 
 <style>
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-:root{
-  --bg:#070707;
-  --panel:#0d0d0f;
-  --panel2:#111114;
-  --panel3:#17171b;
-  --border:#24242a;
-  --purple:#8b5cf6;
-  --purple2:#a78bfa;
-  --text:#f5f5f5;
-  --muted:#8d8d98;
-  --green:#35d07f;
-  --red:#ef4444;
+html,body{
+    width:100%;
+    height:100%;
 }
 
 body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:Inter,Segoe UI,Arial,sans-serif;
-  min-height:100vh;
-  overflow:hidden;
-}
-
-button,input{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
+    background:#07070a;
+    color:#f5f5f7;
+    font-family:Arial,Helvetica,sans-serif;
+    overflow:hidden;
 }
 
 /* APP */
 .app{
-  height:100vh;
-  display:flex;
+    width:100%;
+    height:100vh;
+    display:flex;
+    background:#07070a;
 }
 
 /* SIDEBAR */
 .sidebar{
-  width:245px;
-  background:#09090a;
-  border-right:1px solid var(--border);
-  display:flex;
-  flex-direction:column;
-  flex-shrink:0;
+    width:250px;
+    height:100%;
+    background:#0b0b0f;
+    border-right:1px solid #202027;
+    display:flex;
+    flex-direction:column;
 }
 
 .logo{
-  height:72px;
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:0 22px;
-  border-bottom:1px solid var(--border);
+    height:72px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 20px;
+    border-bottom:1px solid #202027;
 }
 
-.logo-icon{
-  width:36px;
-  height:36px;
-  border-radius:11px;
-  background:linear-gradient(135deg,#7c3aed,#a855f7);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-  font-size:19px;
-  box-shadow:0 0 25px #8b5cf633;
+.logoIcon{
+    width:39px;
+    height:39px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#7c3aed,#a855f7);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:21px;
+    font-weight:bold;
+    box-shadow:0 0 30px rgba(139,92,246,.25);
 }
 
-.logo-name{
-  font-size:21px;
-  font-weight:800;
-  letter-spacing:-.5px;
+.logoText{
+    font-size:23px;
+    font-weight:bold;
 }
 
-.logo-name span{
-  color:var(--purple2);
+.logoText span{
+    color:#a78bfa;
 }
 
-.nav{
-  padding:18px 12px;
+.navigation{
+    padding:18px 12px;
 }
 
-.nav-title{
-  color:#65656e;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:1px;
-  padding:0 10px 9px;
+.navTitle{
+    font-size:10px;
+    color:#606069;
+    font-weight:bold;
+    letter-spacing:1.5px;
+    padding:0 10px 9px;
 }
 
-.nav-item{
-  height:44px;
-  border-radius:9px;
-  padding:0 12px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  color:#9999a2;
-  margin-bottom:4px;
-  transition:.15s;
-  user-select:none;
+.navItem{
+    width:100%;
+    height:44px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 12px;
+    margin-bottom:4px;
+    border-radius:10px;
+    color:#92929c;
+    cursor:pointer;
+    transition:.15s;
 }
 
-.nav-item:hover{
-  background:#151518;
-  color:#fff;
+.navItem:hover{
+    background:#151519;
+    color:#fff;
 }
 
-.nav-item.active{
-  background:#8b5cf61c;
-  color:#c4b5fd;
+.navItem.active{
+    background:#8b5cf61c;
+    color:#c4b5fd;
 }
 
-.nav-icon{
-  width:21px;
-  text-align:center;
-  font-size:18px;
+.navIcon{
+    width:22px;
+    text-align:center;
+    font-size:18px;
 }
 
-.bottom-user{
-  margin-top:auto;
-  padding:13px;
-  border-top:1px solid var(--border);
+/* USER */
+.userArea{
+    margin-top:auto;
+    padding:13px;
+    border-top:1px solid #202027;
 }
 
-.user-card{
-  background:#101012;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:10px;
-  display:flex;
-  align-items:center;
-  gap:10px;
+.user{
+    background:#111114;
+    border:1px solid #24242b;
+    border-radius:12px;
+    padding:9px;
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
 .avatar{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#8b5cf6,#ec4899);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:800;
-  flex-shrink:0;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#8b5cf6,#ec4899);
+    font-weight:bold;
+    flex-shrink:0;
 }
 
-.user-info{
-  flex:1;
-  min-width:0;
+.userInfo{
+    flex:1;
 }
 
-.user-name{
-  font-size:13px;
-  font-weight:700;
+.username{
+    font-size:13px;
+    font-weight:bold;
 }
 
-.user-status{
-  color:var(--green);
-  font-size:11px;
-  margin-top:2px;
+.status{
+    color:#39d98a;
+    font-size:11px;
+    margin-top:3px;
 }
 
-.settings-btn{
-  background:none;
-  border:0;
-  color:#888;
-  font-size:17px;
+.more{
+    border:0;
+    background:none;
+    color:#777;
+    font-size:20px;
+    cursor:pointer;
 }
 
 /* MAIN */
 .main{
-  flex:1;
-  min-width:0;
-  display:flex;
-  flex-direction:column;
+    flex:1;
+    min-width:0;
+    height:100%;
+    display:flex;
+    flex-direction:column;
 }
 
 .topbar{
-  height:72px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  padding:0 25px;
-  gap:15px;
-  background:#09090a;
+    height:72px;
+    flex-shrink:0;
+    background:#0a0a0d;
+    border-bottom:1px solid #202027;
+    display:flex;
+    align-items:center;
+    padding:0 24px;
+    gap:14px;
 }
 
-.page-title{
-  font-size:20px;
-  font-weight:750;
+.topTitle{
+    font-size:20px;
+    font-weight:bold;
 }
 
-.topbar-spacer{
-  flex:1;
+.topSpacer{
+    flex:1;
 }
 
-.top-button{
-  height:38px;
-  padding:0 14px;
-  border-radius:9px;
-  border:1px solid var(--border);
-  background:#111114;
-  color:#bbb;
-  transition:.15s;
+.topButton{
+    height:38px;
+    border:1px solid #28282f;
+    background:#111114;
+    color:#b9b9c2;
+    border-radius:9px;
+    padding:0 14px;
+    cursor:pointer;
 }
 
-.top-button:hover{
-  color:white;
-  border-color:#38383e;
+.topButton:hover{
+    color:white;
+    border-color:#44444d;
 }
 
 .content{
-  flex:1;
-  overflow:auto;
-  padding:28px;
+    flex:1;
+    overflow:auto;
+    padding:30px;
 }
 
 /* HOME */
+.container{
+    max-width:1100px;
+    margin:auto;
+}
+
 .hero{
-  max-width:1100px;
-  margin:0 auto;
-  padding:35px 0 25px;
+    padding:28px 0 30px;
 }
 
 .hero h1{
-  font-size:38px;
-  line-height:1.1;
-  letter-spacing:-1.5px;
+    font-size:40px;
+    letter-spacing:-1.5px;
 }
 
 .hero h1 span{
-  color:var(--purple2);
+    color:#a78bfa;
 }
 
 .hero p{
-  color:var(--muted);
-  margin-top:10px;
-  font-size:15px;
+    margin-top:10px;
+    color:#85858f;
+    font-size:15px;
 }
 
 .cards{
-  max-width:1100px;
-  margin:0 auto;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:16px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
 }
 
 .card{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:20px;
-  transition:.2s;
+    background:#0e0e11;
+    border:1px solid #222229;
+    border-radius:15px;
+    padding:20px;
+    transition:.2s;
 }
 
 .card:hover{
-  transform:translateY(-2px);
-  border-color:#36363d;
+    border-color:#36363e;
+    transform:translateY(-2px);
 }
 
-.card-icon{
-  width:43px;
-  height:43px;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#8b5cf61b;
-  font-size:20px;
-  margin-bottom:16px;
+.card.large{
+    grid-column:span 2;
+}
+
+.cardIcon{
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    background:#8b5cf61b;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:21px;
+    margin-bottom:15px;
 }
 
 .card h3{
-  font-size:16px;
-  margin-bottom:7px;
+    font-size:16px;
+    margin-bottom:7px;
 }
 
 .card p{
-  color:#85858e;
-  font-size:13px;
-  line-height:1.5;
+    color:#80808a;
+    font-size:13px;
+    line-height:1.55;
 }
 
-.big-card{
-  grid-column:span 2;
+.friendPreview{
+    display:flex;
+    margin-top:18px;
 }
 
-.friend-preview{
-  margin-top:17px;
-  display:flex;
-  gap:8px;
+.miniAvatar{
+    width:35px;
+    height:35px;
+    margin-left:-5px;
+    border-radius:50%;
+    border:2px solid #0e0e11;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#6366f1,#8b5cf6);
+    font-size:11px;
+    font-weight:bold;
 }
 
-.mini-avatar{
-  width:32px;
-  height:32px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#6366f1,#8b5cf6);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:12px;
-  font-weight:bold;
-  border:2px solid #0d0d0f;
-  margin-left:-5px;
+.miniAvatar:first-child{
+    margin-left:0;
 }
 
-.mini-avatar:first-child{
-  margin-left:0;
+.primary{
+    margin-top:16px;
+    border:1px solid #8b5cf6;
+    background:#8b5cf6;
+    color:white;
+    padding:9px 13px;
+    border-radius:9px;
+    cursor:pointer;
+}
+
+.secondary{
+    margin-top:16px;
+    border:1px solid #292930;
+    background:#151518;
+    color:#aaa;
+    padding:9px 13px;
+    border-radius:9px;
+    cursor:pointer;
+}
+
+/* PAGE */
+.page{
+    max-width:1100px;
+    margin:auto;
+}
+
+.pageHeader{
+    margin-bottom:22px;
+}
+
+.pageHeader h1{
+    font-size:29px;
+}
+
+.pageHeader p{
+    margin-top:6px;
+    color:#777781;
+    font-size:14px;
 }
 
 /* FRIENDS */
-.page{
-  max-width:1100px;
-  margin:0 auto;
-}
-
-.page-header{
-  margin-bottom:22px;
-}
-
-.page-header h1{
-  font-size:28px;
-}
-
-.page-header p{
-  color:var(--muted);
-  margin-top:6px;
-  font-size:14px;
-}
-
 .tabs{
-  display:flex;
-  gap:5px;
-  border-bottom:1px solid var(--border);
-  margin-bottom:20px;
+    display:flex;
+    border-bottom:1px solid #222229;
+    margin-bottom:20px;
 }
 
 .tab{
-  border:0;
-  background:none;
-  color:#777781;
-  padding:12px 15px;
-  border-bottom:2px solid transparent;
+    border:0;
+    background:none;
+    color:#777781;
+    padding:12px 15px;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
 }
 
 .tab:hover{
-  color:white;
+    color:#fff;
 }
 
 .tab.active{
-  color:#c4b5fd;
-  border-color:var(--purple);
+    color:#c4b5fd;
+    border-color:#8b5cf6;
 }
 
-.friend-list{
-  display:flex;
-  flex-direction:column;
-  gap:9px;
+.friendList{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
 }
 
 .friend{
-  background:#0e0e10;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:13px;
-  display:flex;
-  align-items:center;
-  gap:12px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:#0e0e11;
+    border:1px solid #222229;
+    border-radius:12px;
+    padding:13px;
 }
 
-.friend .avatar{
-  width:44px;
-  height:44px;
+.friendInfo{
+    flex:1;
 }
 
-.friend-details{
-  flex:1;
+.friendInfo strong{
+    font-size:14px;
 }
 
-.friend-details strong{
-  font-size:14px;
+.friendInfo p{
+    margin-top:4px;
+    color:#73737c;
+    font-size:12px;
 }
 
-.friend-details p{
-  font-size:12px;
-  color:#777781;
-  margin-top:3px;
+.onlineDot{
+    display:inline-block;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#39d98a;
+    margin-right:5px;
 }
 
-.online-dot{
-  width:9px;
-  height:9px;
-  background:var(--green);
-  border-radius:50%;
-  display:inline-block;
-  margin-right:5px;
-}
-
-.friend-actions{
-  display:flex;
-  gap:7px;
+.actions{
+    display:flex;
+    gap:7px;
 }
 
 .action{
-  border:1px solid var(--border);
-  background:#151518;
-  color:#aaa;
-  padding:8px 12px;
-  border-radius:8px;
+    border:1px solid #292930;
+    background:#151518;
+    color:#aaa;
+    padding:8px 11px;
+    border-radius:8px;
+    cursor:pointer;
 }
 
 .action:hover{
-  color:white;
-}
-
-.action.primary{
-  background:#8b5cf6;
-  border-color:#8b5cf6;
-  color:white;
+    color:white;
 }
 
 /* CHAT */
-.chat-layout{
-  height:calc(100vh - 72px);
-  display:flex;
+.chatLayout{
+    height:100%;
+    margin:-30px;
+    display:flex;
 }
 
-.chat-list{
-  width:270px;
-  border-right:1px solid var(--border);
-  padding:15px;
-  background:#09090a;
+.chatList{
+    width:275px;
+    flex-shrink:0;
+    background:#09090c;
+    border-right:1px solid #202027;
+    padding:15px;
 }
 
 .search{
-  width:100%;
-  background:#121215;
-  border:1px solid var(--border);
-  color:white;
-  padding:11px 12px;
-  border-radius:9px;
-  outline:none;
-  margin-bottom:12px;
+    width:100%;
+    height:40px;
+    border-radius:9px;
+    border:1px solid #25252c;
+    background:#121215;
+    color:white;
+    padding:0 12px;
+    outline:none;
+    margin-bottom:12px;
 }
 
 .search:focus{
-  border-color:#59419b;
+    border-color:#7656c9;
 }
 
-.chat-user{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px;
-  border-radius:10px;
-  cursor:pointer;
+.chatUser{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-bottom:3px;
 }
 
-.chat-user:hover,
-.chat-user.active{
-  background:#151518;
+.chatUser:hover,
+.chatUser.active{
+    background:#16161a;
 }
 
-.chat-user .avatar{
-  width:38px;
-  height:38px;
+.chatUser .avatar{
+    width:38px;
+    height:38px;
 }
 
-.chat-user-info{
-  min-width:0;
+.chatInfo{
+    min-width:0;
 }
 
-.chat-user-info strong{
-  font-size:13px;
+.chatInfo strong{
+    font-size:13px;
 }
 
-.chat-user-info p{
-  color:#66666f;
-  font-size:11px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+.chatInfo p{
+    margin-top:3px;
+    font-size:11px;
+    color:#686871;
 }
 
 .chat{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  min-width:0;
+    flex:1;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
 }
 
-.chat-header{
-  height:64px;
-  border-bottom:1px solid var(--border);
-  padding:0 20px;
-  display:flex;
-  align-items:center;
-  gap:10px;
+.chatHeader{
+    height:64px;
+    flex-shrink:0;
+    border-bottom:1px solid #202027;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 20px;
 }
 
-.chat-header .avatar{
-  width:35px;
-  height:35px;
+.chatHeader .avatar{
+    width:36px;
+    height:36px;
 }
 
-.chat-header-info strong{
-  font-size:14px;
+.chatHeaderInfo strong{
+    font-size:14px;
 }
 
-.chat-header-info p{
-  color:#6d6d75;
-  font-size:11px;
+.chatHeaderInfo p{
+    margin-top:3px;
+    color:#696971;
+    font-size:11px;
 }
 
 .messages{
-  flex:1;
-  overflow:auto;
-  padding:25px;
+    flex:1;
+    overflow:auto;
+    padding:25px;
 }
 
 .message{
-  display:flex;
-  gap:11px;
-  margin-bottom:21px;
-  max-width:750px;
+    display:flex;
+    gap:11px;
+    max-width:760px;
+    margin-bottom:20px;
 }
 
 .message .avatar{
-  width:38px;
-  height:38px;
+    width:38px;
+    height:38px;
 }
 
-.message-body{
-  background:#111114;
-  border:1px solid var(--border);
-  border-radius:11px;
-  padding:10px 13px;
+.bubble{
+    background:#111114;
+    border:1px solid #25252c;
+    border-radius:11px;
+    padding:10px 13px;
 }
 
-.message-name{
-  font-size:12px;
-  color:#c4b5fd;
-  font-weight:700;
-  margin-bottom:4px;
+.messageName{
+    color:#c4b5fd;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:4px;
 }
 
-.message-text{
-  font-size:13px;
-  color:#ddd;
-  line-height:1.5;
+.messageText{
+    color:#ddd;
+    font-size:13px;
+    line-height:1.5;
 }
 
 .message.me{
-  margin-left:auto;
-  flex-direction:row-reverse;
+    margin-left:auto;
+    flex-direction:row-reverse;
 }
 
-.message.me .message-body{
-  background:#251a3f;
-  border-color:#3d2868;
+.message.me .bubble{
+    background:#251a3f;
+    border-color:#3d2868;
 }
 
-.message.me .message-name{
-  color:#ddd;
+.chatInput{
+    padding:15px;
+    border-top:1px solid #202027;
+    display:flex;
+    gap:9px;
 }
 
-.chat-input{
-  padding:15px;
-  border-top:1px solid var(--border);
-  display:flex;
-  gap:9px;
-}
-
-.chat-input input{
-  flex:1;
-  background:#121215;
-  border:1px solid var(--border);
-  outline:none;
-  color:white;
-  padding:12px;
-  border-radius:9px;
+.chatInput input{
+    flex:1;
+    height:44px;
+    background:#121215;
+    border:1px solid #25252c;
+    color:white;
+    border-radius:9px;
+    padding:0 13px;
+    outline:none;
 }
 
 .send{
-  width:45px;
-  border:0;
-  border-radius:9px;
-  background:var(--purple);
-  color:white;
-  font-size:17px;
+    width:46px;
+    border:0;
+    border-radius:9px;
+    background:#8b5cf6;
+    color:white;
+    cursor:pointer;
+    font-size:17px;
 }
 
-/* SETTINGS */
-.settings{
-  max-width:850px;
-  margin:0 auto;
+/* PROFILE */
+.banner{
+    height:110px;
+    background:linear-gradient(135deg,#6d28d9,#9333ea,#4c1d95);
 }
 
-.settings-section{
-  background:#0e0e10;
-  border:1px solid var(--border);
-  border-radius:13px;
-  margin-bottom:15px;
-  overflow:hidden;
+.profileBody{
+    padding:0 20px 22px;
 }
 
-.settings-title{
-  padding:17px 18px;
-  border-bottom:1px solid var(--border);
-  font-size:14px;
-  font-weight:700;
+.profileAvatar{
+    width:82px;
+    height:82px;
+    border:5px solid #0e0e11;
+    margin-top:-41px;
+    font-size:25px;
 }
 
-.setting{
-  padding:15px 18px;
-  display:flex;
-  align-items:center;
-  gap:15px;
-  border-bottom:1px solid #19191c;
-}
-
-.setting:last-child{
-  border-bottom:0;
-}
-
-.setting-info{
-  flex:1;
-}
-
-.setting-info strong{
-  display:block;
-  font-size:13px;
-}
-
-.setting-info span{
-  display:block;
-  color:#72727b;
-  font-size:11px;
-  margin-top:4px;
-}
-
-.toggle{
-  width:42px;
-  height:23px;
-  border-radius:20px;
-  background:#29292e;
-  position:relative;
-  cursor:pointer;
-}
-
-.toggle::after{
-  content:"";
-  position:absolute;
-  width:17px;
-  height:17px;
-  border-radius:50%;
-  background:#777;
-  top:3px;
-  left:3px;
-  transition:.2s;
-}
-
-.toggle.on{
-  background:#7c3aed;
-}
-
-.toggle.on::after{
-  left:22px;
-  background:white;
-}
-
-/* PROFILE MODAL */
+/* MODAL */
 .modal{
-  position:fixed;
-  inset:0;
-  background:#0009;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:20;
-  backdrop-filter:blur(5px);
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.68);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+    backdrop-filter:blur(5px);
 }
 
 .modal.show{
-  display:flex;
+    display:flex;
 }
 
-.profile-modal{
-  width:390px;
-  background:#101012;
-  border:1px solid #2a2a30;
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 20px 80px #000;
+.modalCard{
+    width:390px;
+    background:#101012;
+    border:1px solid #2b2b32;
+    border-radius:16px;
+    overflow:hidden;
 }
 
-.profile-banner{
-  height:100px;
-  background:linear-gradient(135deg,#6d28d9,#9333ea,#4c1d95);
-}
-
-.profile-content{
-  padding:0 20px 20px;
-  position:relative;
-}
-
-.profile-content .avatar{
-  width:76px;
-  height:76px;
-  border:5px solid #101012;
-  margin-top:-38px;
-  font-size:23px;
-}
-
-.profile-content h2{
-  margin-top:10px;
-  font-size:20px;
-}
-
-.profile-tag{
-  color:#777781;
-  font-size:12px;
-  margin-top:3px;
-}
-
-.profile-about{
-  background:#151518;
-  border:1px solid var(--border);
-  border-radius:9px;
-  padding:12px;
-  margin-top:16px;
-  font-size:12px;
-  color:#aaa;
-  line-height:1.5;
+.modalBody{
+    position:relative;
+    padding:0 20px 20px;
 }
 
 .close{
-  position:absolute;
-  right:14px;
-  top:14px;
-  width:32px;
-  height:32px;
-  border:0;
-  border-radius:50%;
-  background:#0005;
-  color:white;
-  font-size:18px;
+    position:absolute;
+    right:14px;
+    top:14px;
+    width:32px;
+    height:32px;
+    border:0;
+    border-radius:50%;
+    background:rgba(0,0,0,.5);
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+}
+
+/* SETTINGS */
+.section{
+    background:#0e0e11;
+    border:1px solid #222229;
+    border-radius:13px;
+    margin-bottom:15px;
+    overflow:hidden;
+}
+
+.sectionTitle{
+    padding:17px 18px;
+    border-bottom:1px solid #222229;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.setting{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:15px 18px;
+    border-bottom:1px solid #1b1b20;
+}
+
+.setting:last-child{
+    border-bottom:0;
+}
+
+.settingInfo{
+    flex:1;
+}
+
+.settingInfo strong{
+    display:block;
+    font-size:13px;
+}
+
+.settingInfo span{
+    display:block;
+    margin-top:4px;
+    color:#707079;
+    font-size:11px;
+}
+
+.toggle{
+    width:42px;
+    height:23px;
+    border-radius:20px;
+    background:#29292e;
+    position:relative;
+    cursor:pointer;
+}
+
+.toggle:after{
+    content:"";
+    position:absolute;
+    width:17px;
+    height:17px;
+    border-radius:50%;
+    background:#777;
+    left:3px;
+    top:3px;
+    transition:.2s;
+}
+
+.toggle.on{
+    background:#7c3aed;
+}
+
+.toggle.on:after{
+    left:22px;
+    background:white;
 }
 
 /* TOAST */
 .toast{
-  position:fixed;
-  right:22px;
-  bottom:22px;
-  background:#17171a;
-  border:1px solid #303038;
-  padding:12px 15px;
-  border-radius:10px;
-  color:#ddd;
-  font-size:13px;
-  transform:translateY(100px);
-  opacity:0;
-  transition:.25s;
-  z-index:50;
+    position:fixed;
+    right:22px;
+    bottom:22px;
+    background:#17171b;
+    border:1px solid #303038;
+    color:#ddd;
+    padding:12px 15px;
+    border-radius:10px;
+    font-size:13px;
+    opacity:0;
+    transform:translateY(15px);
+    transition:.2s;
+    pointer-events:none;
+    z-index:200;
 }
 
 .toast.show{
-  transform:translateY(0);
-  opacity:1;
+    opacity:1;
+    transform:translateY(0);
 }
 
 /* MOBILE */
-.mobile-menu{
-  display:none;
-}
-
 @media(max-width:800px){
-  .sidebar{
-    width:70px;
-  }
+    .sidebar{
+        width:70px;
+    }
 
-  .logo{
-    justify-content:center;
-    padding:0;
-  }
+    .logo{
+        justify-content:center;
+        padding:0;
+    }
 
-  .logo-name,
-  .nav-title,
-  .nav-item span,
-  .user-info,
-  .settings-btn{
-    display:none;
-  }
+    .logoText,
+    .navTitle,
+    .navItem span,
+    .userInfo,
+    .more{
+        display:none;
+    }
 
-  .nav-item{
-    justify-content:center;
-    padding:0;
-  }
+    .navItem{
+        justify-content:center;
+        padding:0;
+    }
 
-  .bottom-user{
-    padding:10px;
-  }
+    .userArea{
+        padding:9px;
+    }
 
-  .user-card{
-    justify-content:center;
-    padding:7px;
-  }
+    .user{
+        justify-content:center;
+    }
 
-  .cards{
-    grid-template-columns:1fr;
-  }
+    .cards{
+        grid-template-columns:1fr;
+    }
 
-  .big-card{
-    grid-column:span 1;
-  }
+    .card.large{
+        grid-column:span 1;
+    }
 
-  .chat-list{
-    width:75px;
-  }
+    .chatList{
+        width:75px;
+    }
 
-  .chat-user-info{
-    display:none;
-  }
+    .chatInfo,
+    .chatList .search{
+        display:none;
+    }
 
-  .chat-user{
-    justify-content:center;
-  }
-
-  .chat-list .search{
-    display:none;
-  }
+    .chatUser{
+        justify-content:center;
+    }
 }
 
 @media(max-width:520px){
-  .sidebar{
-    display:none;
-  }
+    .sidebar{
+        display:none;
+    }
 
-  .topbar{
-    padding:0 15px;
-  }
+    .content{
+        padding:18px;
+    }
 
-  .content{
-    padding:18px;
-  }
+    .topbar{
+        padding:0 15px;
+    }
 
-  .hero h1{
-    font-size:29px;
-  }
+    .hero h1{
+        font-size:30px;
+    }
 
-  .cards{
-    display:block;
-  }
+    .chatList{
+        display:none;
+    }
 
-  .card{
-    margin-bottom:12px;
-  }
-
-  .chat-list{
-    display:none;
-  }
-
-  .messages{
-    padding:15px;
-  }
+    .messages{
+        padding:15px;
+    }
 }
 </style>
 </head>
@@ -889,795 +850,1205 @@ button{
 
 <div class="app">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-    <div class="logo">
-      <div class="logo-icon">N</div>
-      <div class="logo-name">Ne<span>xa</span></div>
-    </div>
-
-    <nav class="nav">
-
-      <div class="nav-title">NEXA</div>
-
-      <div class="nav-item active" data-page="home">
-        <div class="nav-icon">🏠</div>
-        <span>Home</span>
-      </div>
-
-      <div class="nav-item" data-page="friends">
-        <div class="nav-icon">👥</div>
-        <span>Friends</span>
-      </div>
-
-      <div class="nav-item" data-page="chat">
-        <div class="nav-icon">💬</div>
-        <span>Messages</span>
-      </div>
-
-      <div class="nav-item" data-page="explore">
-        <div class="nav-icon">🔎</div>
-        <span>Explore</span>
-      </div>
-
-      <div class="nav-title" style="margin-top:22px;">PERSONAL</div>
-
-      <div class="nav-item" data-page="profile">
-        <div class="nav-icon">👤</div>
-        <span>My Profile</span>
-      </div>
-
-      <div class="nav-item" data-page="settings">
-        <div class="nav-icon">⚙️</div>
-        <span>Settings</span>
-      </div>
-
-    </nav>
-
-    <div class="bottom-user">
-      <div class="user-card">
-        <div class="avatar">A</div>
-        <div class="user-info">
-          <div class="user-name">Ahmed</div>
-          <div class="user-status">● Online</div>
+        <div class="logo">
+            <div class="logoIcon">N</div>
+            <div class="logoText">Ne<span>xa</span></div>
         </div>
-        <button class="settings-btn" onclick="openProfile()">⋯</button>
-      </div>
-    </div>
 
-  </aside>
+        <nav class="navigation">
 
-  <!-- MAIN -->
-  <main class="main">
+            <div class="navTitle">NEXA</div>
 
-    <header class="topbar">
-      <button class="top-button" onclick="showToast('Nexa is running locally ✨')">Nexa</button>
-      <div class="page-title" id="pageTitle">Home</div>
-      <div class="topbar-spacer"></div>
-      <button class="top-button" onclick="openProfile()">👤 Profile</button>
-    </header>
+            <div class="navItem active" onclick="navigate('home',this)">
+                <div class="navIcon">🏠</div>
+                <span>Home</span>
+            </div>
 
-    <section class="content" id="content"></section>
+            <div class="navItem" onclick="navigate('friends',this)">
+                <div class="navIcon">👥</div>
+                <span>Friends</span>
+            </div>
 
-  </main>
+            <div class="navItem" onclick="navigate('messages',this)">
+                <div class="navIcon">💬</div>
+                <span>Messages</span>
+            </div>
+
+            <div class="navItem" onclick="navigate('explore',this)">
+                <div class="navIcon">🔎</div>
+                <span>Explore</span>
+            </div>
+
+            <div class="navTitle" style="margin-top:22px">PERSONAL</div>
+
+            <div class="navItem" onclick="navigate('profile',this)">
+                <div class="navIcon">👤</div>
+                <span>My Profile</span>
+            </div>
+
+            <div class="navItem" onclick="navigate('settings',this)">
+                <div class="navIcon">⚙️</div>
+                <span>Settings</span>
+            </div>
+
+        </nav>
+
+        <div class="userArea">
+            <div class="user">
+                <div class="avatar">A</div>
+
+                <div class="userInfo">
+                    <div class="username">Ahmed</div>
+                    <div class="status">● Online</div>
+                </div>
+
+                <button class="more" onclick="openProfile()">⋯</button>
+            </div>
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <header class="topbar">
+            <button class="topButton" onclick="toast('Nexa is running offline ✨')">
+                Nexa
+            </button>
+
+            <div class="topTitle" id="pageTitle">Home</div>
+
+            <div class="topSpacer"></div>
+
+            <button class="topButton" onclick="openProfile()">
+                👤 Profile
+            </button>
+        </header>
+
+        <div class="content" id="content"></div>
+
+    </main>
 
 </div>
 
+
 <!-- PROFILE MODAL -->
 <div class="modal" id="profileModal" onclick="closeProfile(event)">
-  <div class="profile-modal" onclick="event.stopPropagation()">
 
-    <div class="profile-banner"></div>
+    <div class="modalCard" onclick="event.stopPropagation()">
 
-    <div class="profile-content">
-      <button class="close" onclick="closeProfile()">×</button>
+        <div class="banner"></div>
 
-      <div class="avatar">A</div>
+        <div class="modalBody">
 
-      <h2>Ahmed</h2>
-      <div class="profile-tag">@ahmed</div>
+            <button class="close" onclick="closeProfile()">×</button>
 
-      <div class="profile-about">
-        Welcome to my Nexa profile! 👋<br>
-        Hanging out, chatting and having fun.
-      </div>
+            <div class="avatar profileAvatar">A</div>
 
-      <button
-        class="action primary"
-        style="width:100%;margin-top:12px"
-        onclick="showToast('Profile editing is available in this offline demo')"
-      >
-        ✏️ Edit Profile
-      </button>
+            <h2 style="margin-top:10px">Ahmed</h2>
+
+            <div style="color:#777;font-size:12px;margin-top:3px">
+                @ahmed
+            </div>
+
+            <div style="
+                background:#151518;
+                border:1px solid #25252c;
+                border-radius:9px;
+                padding:12px;
+                margin-top:16px;
+                color:#aaa;
+                font-size:12px;
+                line-height:1.5;
+            ">
+                Welcome to my Nexa profile! 👋<br>
+                Hanging out, chatting and having fun.
+            </div>
+
+            <button class="primary" style="width:100%"
+                onclick="toast('Profile editing is offline for now')">
+                ✏️ Edit Profile
+            </button>
+
+        </div>
+
     </div>
 
-  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
+
 <script>
-/* =========================
-   OFFLINE NEXA
-   ========================= */
+
+/* ==============================
+   NEXA OFFLINE SYSTEM
+   ============================== */
 
 const content = document.getElementById("content");
 const pageTitle = document.getElementById("pageTitle");
 
 const friends = [
-  {
-    name:"Alex",
-    username:"@alex",
-    letter:"A",
-    online:true,
-    status:"Playing games"
-  },
-  {
-    name:"Sam",
-    username:"@sam",
-    letter:"S",
-    online:true,
-    status:"Hanging out"
-  },
-  {
-    name:"Leo",
-    username:"@leo",
-    letter:"L",
-    online:false,
-    status:"Offline"
-  },
-  {
-    name:"Max",
-    username:"@max",
-    letter:"M",
-    online:false,
-    status:"Offline"
-  }
+    {
+        name:"Alex",
+        letter:"A",
+        online:true,
+        status:"Playing games"
+    },
+    {
+        name:"Sam",
+        letter:"S",
+        online:true,
+        status:"Hanging out"
+    },
+    {
+        name:"Leo",
+        letter:"L",
+        online:false,
+        status:"Offline"
+    },
+    {
+        name:"Max",
+        letter:"M",
+        online:false,
+        status:"Offline"
+    }
 ];
 
-function renderHome(){
 
-  content.innerHTML = `
-    <div class="hero">
-      <h1>Welcome back to <span>Nexa</span>.</h1>
-      <p>Your place to chat, hang out and connect with friends.</p>
-    </div>
+/* HOME */
 
-    <div class="cards">
+function showHome(){
 
-      <div class="card big-card">
-        <div class="card-icon">👥</div>
-        <h3>Your Friends</h3>
-        <p>
-          See your friends, check who's online and start a conversation.
-        </p>
+    content.innerHTML = `
 
-        <div class="friend-preview">
-          <div class="mini-avatar">A</div>
-          <div class="mini-avatar">S</div>
-          <div class="mini-avatar">L</div>
-          <div class="mini-avatar">M</div>
+        <div class="container">
+
+            <div class="hero">
+                <h1>
+                    Welcome back to <span>Nexa</span>.
+                </h1>
+
+                <p>
+                    Your place to chat, hang out and connect with friends.
+                </p>
+            </div>
+
+
+            <div class="cards">
+
+                <div class="card large">
+
+                    <div class="cardIcon">👥</div>
+
+                    <h3>Your Friends</h3>
+
+                    <p>
+                        See your friends, check who's online
+                        and start a conversation.
+                    </p>
+
+                    <div class="friendPreview">
+                        <div class="miniAvatar">A</div>
+                        <div class="miniAvatar">S</div>
+                        <div class="miniAvatar">L</div>
+                        <div class="miniAvatar">M</div>
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="cardIcon">💬</div>
+
+                    <h3>Messages</h3>
+
+                    <p>
+                        Start a conversation with one of your friends.
+                    </p>
+
+                    <button class="primary"
+                        onclick="navigateByName('messages')">
+                        Open Messages
+                    </button>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="cardIcon">🔎</div>
+
+                    <h3>Explore</h3>
+
+                    <p>
+                        Discover what Nexa has to offer.
+                    </p>
+
+                    <button class="secondary"
+                        onclick="navigateByName('explore')">
+                        Explore
+                    </button>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="cardIcon">✨</div>
+
+                    <h3>Offline Nexa</h3>
+
+                    <p>
+                        This version runs completely on your device.
+                        No account, Firebase, database or online connection
+                        is required.
+                    </p>
+
+                </div>
+
+            </div>
+
         </div>
-      </div>
-
-      <div class="card">
-        <div class="card-icon">💬</div>
-        <h3>Messages</h3>
-        <p>
-          Start a conversation with one of your friends.
-        </p>
-
-        <button class="action primary"
-          style="margin-top:16px"
-          onclick="navigate('chat')">
-          Open Messages
-        </button>
-      </div>
-
-      <div class="card">
-        <div class="card-icon">🔎</div>
-        <h3>Explore</h3>
-        <p>
-          Discover what Nexa has to offer.
-        </p>
-
-        <button class="action"
-          style="margin-top:16px"
-          onclick="navigate('explore')">
-          Explore
-        </button>
-      </div>
-
-      <div class="card">
-        <div class="card-icon">✨</div>
-        <h3>Made for you</h3>
-        <p>
-          Nexa is currently running completely offline. Everything you see
-          here works without an account or internet connection.
-        </p>
-      </div>
-
-    </div>
-  `;
-}
-
-function renderFriends(){
-
-  content.innerHTML = `
-    <div class="page">
-
-      <div class="page-header">
-        <h1>Friends</h1>
-        <p>Manage your friends and see who's around.</p>
-      </div>
-
-      <div class="tabs">
-        <button class="tab active" onclick="friendTab(this,'all')">All</button>
-        <button class="tab" onclick="friendTab(this,'online')">Online</button>
-        <button class="tab" onclick="friendTab(this,'offline')">Offline</button>
-        <button class="tab" onclick="friendTab(this,'pending')">Pending</button>
-        <button class="tab" onclick="friendTab(this,'add')">Add a friend</button>
-      </div>
-
-      <div id="friendList" class="friend-list"></div>
-
-    </div>
-  `;
-
-  renderFriendList("all");
-}
-
-function renderFriendList(type){
-
-  const list = document.getElementById("friendList");
-
-  if(type === "pending"){
-    list.innerHTML = `
-      <div class="card">
-        <div class="card-icon">📨</div>
-        <h3>No pending requests</h3>
-        <p>You don't have any friend requests right now.</p>
-      </div>
     `;
-    return;
-  }
+}
 
-  if(type === "add"){
-    list.innerHTML = `
-      <div class="card">
-        <div class="card-icon">➕</div>
-        <h3>Add a friend</h3>
-        <p>Enter a username to send a friend request.</p>
 
-        <div style="display:flex;gap:8px;margin-top:15px">
-          <input
-            class="search"
-            id="addFriendInput"
-            placeholder="Enter username..."
-            style="margin:0"
-          >
+/* FRIENDS */
 
-          <button class="action primary"
-            onclick="addFriend()">
-            Add
-          </button>
+function showFriends(){
+
+    content.innerHTML = `
+
+        <div class="page">
+
+            <div class="pageHeader">
+
+                <h1>Friends</h1>
+
+                <p>
+                    Manage your friends and see who's around.
+                </p>
+
+            </div>
+
+
+            <div class="tabs">
+
+                <button class="tab active"
+                    onclick="friendTab(this,'all')">
+                    All
+                </button>
+
+                <button class="tab"
+                    onclick="friendTab(this,'online')">
+                    Online
+                </button>
+
+                <button class="tab"
+                    onclick="friendTab(this,'offline')">
+                    Offline
+                </button>
+
+                <button class="tab"
+                    onclick="friendTab(this,'pending')">
+                    Pending
+                </button>
+
+                <button class="tab"
+                    onclick="friendTab(this,'add')">
+                    Add a friend
+                </button>
+
+            </div>
+
+
+            <div class="friendList" id="friendList"></div>
+
         </div>
-      </div>
     `;
-    return;
-  }
 
-  let data = friends;
-
-  if(type === "online"){
-    data = friends.filter(f => f.online);
-  }
-
-  if(type === "offline"){
-    data = friends.filter(f => !f.online);
-  }
-
-  list.innerHTML = data.map(friend => `
-    <div class="friend">
-
-      <div class="avatar">${friend.letter}</div>
-
-      <div class="friend-details">
-        <strong>${friend.name}</strong>
-        <p>
-          ${friend.online
-            ? '<span class="online-dot"></span>Online'
-            : 'Offline'}
-          · ${friend.status}
-        </p>
-      </div>
-
-      <div class="friend-actions">
-        <button class="action"
-          onclick="openChat('${friend.name}')">
-          💬
-        </button>
-
-        <button class="action"
-          onclick="showToast('Opened ${friend.name}\\'s profile')">
-          👤
-        </button>
-      </div>
-
-    </div>
-  `).join("");
+    renderFriends("all");
 }
+
+
+function renderFriends(type){
+
+    const list = document.getElementById("friendList");
+
+    if(type === "pending"){
+
+        list.innerHTML = `
+            <div class="card">
+
+                <div class="cardIcon">📨</div>
+
+                <h3>No pending requests</h3>
+
+                <p>
+                    You don't have any friend requests right now.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    if(type === "add"){
+
+        list.innerHTML = `
+
+            <div class="card">
+
+                <div class="cardIcon">➕</div>
+
+                <h3>Add a friend</h3>
+
+                <p>
+                    Enter a username to send a friend request.
+                </p>
+
+                <div style="
+                    display:flex;
+                    gap:8px;
+                    margin-top:15px;
+                ">
+
+                    <input
+                        class="search"
+                        id="friendInput"
+                        style="margin:0"
+                        placeholder="Enter username..."
+                    >
+
+                    <button
+                        class="primary"
+                        style="margin:0"
+                        onclick="addFriend()">
+                        Add
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    let data = friends;
+
+    if(type === "online"){
+        data = friends.filter(friend => friend.online);
+    }
+
+    if(type === "offline"){
+        data = friends.filter(friend => !friend.online);
+    }
+
+
+    list.innerHTML = data.map(friend => `
+
+        <div class="friend">
+
+            <div class="avatar">
+                ${friend.letter}
+            </div>
+
+            <div class="friendInfo">
+
+                <strong>${friend.name}</strong>
+
+                <p>
+                    ${
+                        friend.online
+                        ? '<span class="onlineDot"></span>Online'
+                        : 'Offline'
+                    }
+
+                    · ${friend.status}
+                </p>
+
+            </div>
+
+            <div class="actions">
+
+                <button
+                    class="action"
+                    onclick="openChat('${friend.name}')">
+                    💬
+                </button>
+
+                <button
+                    class="action"
+                    onclick="toast('Opened ${friend.name} profile')">
+                    👤
+                </button>
+
+            </div>
+
+        </div>
+
+    `).join("");
+}
+
 
 function friendTab(button,type){
 
-  document.querySelectorAll(".tab")
-    .forEach(tab => tab.classList.remove("active"));
+    document
+        .querySelectorAll(".tab")
+        .forEach(tab => tab.classList.remove("active"));
 
-  button.classList.add("active");
+    button.classList.add("active");
 
-  renderFriendList(type);
+    renderFriends(type);
 }
+
 
 function addFriend(){
 
-  const input = document.getElementById("addFriendInput");
-  const value = input.value.trim();
+    const input = document.getElementById("friendInput");
 
-  if(!value){
-    showToast("Enter a username first.");
-    return;
-  }
+    const username = input.value.trim();
 
-  showToast("Friend request sent to " + value + "!");
-  input.value = "";
+    if(!username){
+
+        toast("Enter a username first.");
+
+        return;
+    }
+
+    toast("Friend request sent to " + username + "!");
+
+    input.value = "";
 }
 
-function renderChat(){
 
-  content.innerHTML = `
-    <div class="chat-layout">
+/* MESSAGES */
 
-      <div class="chat-list">
+function showMessages(){
 
-        <input
-          class="search"
-          placeholder="Search..."
-          oninput="filterChats(this.value)"
-        >
+    content.innerHTML = `
 
-        <div id="chatUsers">
+        <div class="chatLayout">
 
-          ${friends.map((f,i)=>`
-            <div class="chat-user ${i===0?'active':''}"
-              onclick="selectChat('${f.name}',this)">
+            <div class="chatList">
 
-              <div class="avatar">${f.letter}</div>
+                <input
+                    class="search"
+                    placeholder="Search..."
+                    oninput="filterChats(this.value)"
+                >
 
-              <div class="chat-user-info">
-                <strong>${f.name}</strong>
-                <p>${f.online?'Online':'Offline'}</p>
-              </div>
+
+                <div id="chatUsers">
+
+                    ${friends.map((friend,index) => `
+
+                        <div
+                            class="chatUser ${index===0 ? "active":""}"
+                            onclick="selectChat('${friend.name}',this)"
+                        >
+
+                            <div class="avatar">
+                                ${friend.letter}
+                            </div>
+
+                            <div class="chatInfo">
+
+                                <strong>
+                                    ${friend.name}
+                                </strong>
+
+                                <p>
+                                    ${friend.online ? "Online":"Offline"}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    `).join("")}
+
+                </div>
 
             </div>
-          `).join("")}
 
-        </div>
 
-      </div>
+            <div class="chat">
 
-      <div class="chat">
+                <div class="chatHeader">
 
-        <div class="chat-header">
+                    <div class="avatar">
+                        A
+                    </div>
 
-          <div class="avatar">A</div>
+                    <div class="chatHeaderInfo">
 
-          <div class="chat-header-info">
-            <strong id="chatName">Alex</strong>
-            <p id="chatStatus">Online</p>
-          </div>
+                        <strong id="chatName">
+                            Alex
+                        </strong>
 
-        </div>
+                        <p id="chatStatus">
+                            Online
+                        </p>
 
-        <div class="messages" id="messages">
+                    </div>
 
-          <div class="message">
+                </div>
 
-            <div class="avatar">A</div>
 
-            <div class="message-body">
-              <div class="message-name">Alex</div>
-              <div class="message-text">
-                Yo! Welcome to Nexa 👋
-              </div>
+                <div class="messages" id="messages">
+
+                    <div class="message">
+
+                        <div class="avatar">
+                            A
+                        </div>
+
+                        <div class="bubble">
+
+                            <div class="messageName">
+                                Alex
+                            </div>
+
+                            <div class="messageText">
+                                Yo! Welcome to Nexa 👋
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="message me">
+
+                        <div class="avatar">
+                            A
+                        </div>
+
+                        <div class="bubble">
+
+                            <div class="messageName">
+                                Ahmed
+                            </div>
+
+                            <div class="messageText">
+                                Thanks bro 😎
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="message">
+
+                        <div class="avatar">
+                            A
+                        </div>
+
+                        <div class="bubble">
+
+                            <div class="messageName">
+                                Alex
+                            </div>
+
+                            <div class="messageText">
+                                Welcome to the offline Nexa demo.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chatInput">
+
+                    <input
+                        id="messageInput"
+                        placeholder="Message Alex..."
+                        onkeydown="
+                            if(event.key==='Enter'){
+                                sendMessage();
+                            }
+                        "
+                    >
+
+                    <button
+                        class="send"
+                        onclick="sendMessage()">
+                        ➤
+                    </button>
+
+                </div>
+
             </div>
 
-          </div>
-
-          <div class="message me">
-
-            <div class="avatar">A</div>
-
-            <div class="message-body">
-              <div class="message-name">Ahmed</div>
-              <div class="message-text">
-                Thanks bro 😎
-              </div>
-            </div>
-
-          </div>
-
-          <div class="message">
-
-            <div class="avatar">A</div>
-
-            <div class="message-body">
-              <div class="message-name">Alex</div>
-              <div class="message-text">
-                This offline Nexa demo is working perfectly.
-              </div>
-            </div>
-
-          </div>
-
         </div>
-
-        <div class="chat-input">
-
-          <input
-            id="messageInput"
-            placeholder="Message Alex..."
-            onkeydown="if(event.key==='Enter')sendMessage()"
-          >
-
-          <button class="send" onclick="sendMessage()">➤</button>
-
-        </div>
-
-      </div>
-
-    </div>
-  `;
+    `;
 }
+
 
 function sendMessage(){
 
-  const input = document.getElementById("messageInput");
-  const text = input.value.trim();
+    const input =
+        document.getElementById("messageInput");
 
-  if(!text) return;
+    const text = input.value.trim();
 
-  const messages = document.getElementById("messages");
+    if(!text){
+        return;
+    }
 
-  messages.innerHTML += `
-    <div class="message me">
+    const messages =
+        document.getElementById("messages");
 
-      <div class="avatar">A</div>
+    const message =
+        document.createElement("div");
 
-      <div class="message-body">
-        <div class="message-name">Ahmed</div>
-        <div class="message-text"></div>
-      </div>
+    message.className = "message me";
 
-    </div>
-  `;
+    message.innerHTML = `
 
-  const last = messages.lastElementChild
-    .querySelector(".message-text");
+        <div class="avatar">
+            A
+        </div>
 
-  last.textContent = text;
+        <div class="bubble">
 
-  input.value = "";
-  messages.scrollTop = messages.scrollHeight;
+            <div class="messageName">
+                Ahmed
+            </div>
+
+            <div class="messageText"></div>
+
+        </div>
+    `;
+
+    message
+        .querySelector(".messageText")
+        .textContent = text;
+
+    messages.appendChild(message);
+
+    input.value = "";
+
+    messages.scrollTop =
+        messages.scrollHeight;
 }
+
 
 function selectChat(name,element){
 
-  document.querySelectorAll(".chat-user")
-    .forEach(x=>x.classList.remove("active"));
+    document
+        .querySelectorAll(".chatUser")
+        .forEach(user => {
+            user.classList.remove("active");
+        });
 
-  element.classList.add("active");
+    element.classList.add("active");
 
-  document.getElementById("chatName").textContent = name;
+    const friend =
+        friends.find(f => f.name === name);
 
-  const friend = friends.find(f=>f.name === name);
+    document.getElementById("chatName")
+        .textContent = name;
 
-  document.getElementById("chatStatus").textContent =
-    friend && friend.online ? "Online" : "Offline";
+    document.getElementById("chatStatus")
+        .textContent =
+        friend && friend.online
+        ? "Online"
+        : "Offline";
 
-  document.getElementById("messageInput").placeholder =
-    "Message " + name + "...";
+    document.getElementById("messageInput")
+        .placeholder =
+        "Message " + name + "...";
 }
 
-function openChat(name){
-
-  navigate("chat");
-
-  setTimeout(()=>{
-    const users = document.querySelectorAll(".chat-user");
-
-    users.forEach(user=>{
-      if(user.textContent.includes(name)){
-        selectChat(name,user);
-      }
-    });
-  },50);
-}
 
 function filterChats(value){
 
-  value = value.toLowerCase();
+    value = value.toLowerCase();
 
-  document.querySelectorAll(".chat-user")
-    .forEach(user=>{
-      user.style.display =
-        user.textContent.toLowerCase().includes(value)
-        ? "flex"
-        : "none";
-    });
+    document
+        .querySelectorAll(".chatUser")
+        .forEach(user => {
+
+            user.style.display =
+                user.textContent
+                .toLowerCase()
+                .includes(value)
+                ? "flex"
+                : "none";
+
+        });
 }
 
-function renderExplore(){
 
-  content.innerHTML = `
-    <div class="page">
+function openChat(name){
 
-      <div class="page-header">
-        <h1>Explore</h1>
-        <p>Discover Nexa.</p>
-      </div>
+    navigateByName("messages");
 
-      <div class="cards">
+    setTimeout(() => {
 
-        <div class="card">
-          <div class="card-icon">🌎</div>
-          <h3>Communities</h3>
-          <p>
-            Find communities and hang out with people who share your interests.
-          </p>
-        </div>
+        document
+            .querySelectorAll(".chatUser")
+            .forEach(user => {
 
-        <div class="card">
-          <div class="card-icon">🎮</div>
-          <h3>Gaming</h3>
-          <p>
-            Talk about games, share moments and find people to play with.
-          </p>
-        </div>
+                if(user.textContent.includes(name)){
+                    selectChat(name,user);
+                }
 
-        <div class="card">
-          <div class="card-icon">🎨</div>
-          <h3>Creative</h3>
-          <p>
-            Share your art, projects and ideas with the Nexa community.
-          </p>
-        </div>
+            });
 
-        <div class="card">
-          <div class="card-icon">🎵</div>
-          <h3>Music</h3>
-          <p>
-            Discover music and chat about your favorite artists.
-          </p>
-        </div>
-
-      </div>
-
-    </div>
-  `;
+    },50);
 }
 
-function renderProfile(){
 
-  content.innerHTML = `
-    <div class="settings">
+/* EXPLORE */
 
-      <div class="page-header">
-        <h1>My Profile</h1>
-        <p>Your Nexa profile.</p>
-      </div>
+function showExplore(){
 
-      <div class="settings-section">
+    content.innerHTML = `
 
-        <div class="profile-banner"></div>
+        <div class="page">
 
-        <div style="padding:0 20px 22px">
+            <div class="pageHeader">
 
-          <div class="avatar"
-            style="
-              width:78px;
-              height:78px;
-              border:5px solid #0e0e10;
-              margin-top:-39px;
-              font-size:24px;
-            ">
-            A
-          </div>
+                <h1>Explore</h1>
 
-          <h2 style="margin-top:10px">Ahmed</h2>
+                <p>
+                    Discover Nexa.
+                </p>
 
-          <p style="color:#777;font-size:13px;margin-top:3px">
-            @ahmed
-          </p>
+            </div>
 
-          <p style="color:#aaa;font-size:13px;margin-top:17px;line-height:1.5">
-            Welcome to my Nexa profile! 👋
-          </p>
 
-          <button
-            class="action primary"
-            style="margin-top:16px"
-            onclick="showToast('Profile editing is available in this offline version')"
-          >
-            ✏️ Edit Profile
-          </button>
+            <div class="cards">
+
+                <div class="card">
+
+                    <div class="cardIcon">🌎</div>
+
+                    <h3>Communities</h3>
+
+                    <p>
+                        Find communities and hang out with people
+                        who share your interests.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="cardIcon">🎮</div>
+
+                    <h3>Gaming</h3>
+
+                    <p>
+                        Talk about games and find people to play with.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="cardIcon">🎨</div>
+
+                    <h3>Creative</h3>
+
+                    <p>
+                        Share your art, projects and ideas.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="cardIcon">🎵</div>
+
+                    <h3>Music</h3>
+
+                    <p>
+                        Discover music and chat about your favorites.
+                    </p>
+
+                </div>
+
+            </div>
 
         </div>
-
-      </div>
-
-    </div>
-  `;
+    `;
 }
 
-function renderSettings(){
 
-  content.innerHTML = `
-    <div class="settings">
+/* PROFILE */
 
-      <div class="page-header">
-        <h1>Settings</h1>
-        <p>Customize your Nexa experience.</p>
-      </div>
+function showProfile(){
 
-      <div class="settings-section">
+    content.innerHTML = `
 
-        <div class="settings-title">
-          Appearance
+        <div class="page">
+
+            <div class="pageHeader">
+
+                <h1>My Profile</h1>
+
+                <p>
+                    Your Nexa profile.
+                </p>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="banner"></div>
+
+                <div class="profileBody">
+
+                    <div class="avatar profileAvatar">
+                        A
+                    </div>
+
+                    <h2 style="margin-top:10px">
+                        Ahmed
+                    </h2>
+
+                    <p style="
+                        color:#777;
+                        font-size:13px;
+                        margin-top:4px;
+                    ">
+                        @ahmed
+                    </p>
+
+                    <p style="
+                        color:#aaa;
+                        font-size:13px;
+                        margin-top:18px;
+                    ">
+                        Welcome to my Nexa profile! 👋
+                    </p>
+
+                    <button
+                        class="primary"
+                        onclick="
+                            toast('Profile editing is offline for now')
+                        ">
+                        ✏️ Edit Profile
+                    </button>
+
+                </div>
+
+            </div>
+
         </div>
-
-        <div class="setting">
-          <div class="setting-info">
-            <strong>Dark Mode</strong>
-            <span>Nexa's default dark appearance.</span>
-          </div>
-          <div class="toggle on" onclick="toggleSetting(this)"></div>
-        </div>
-
-        <div class="setting">
-          <div class="setting-info">
-            <strong>Animations</strong>
-            <span>Enable interface animations.</span>
-          </div>
-          <div class="toggle on" onclick="toggleSetting(this)"></div>
-        </div>
-
-      </div>
-
-      <div class="settings-section">
-
-        <div class="settings-title">
-          Notifications
-        </div>
-
-        <div class="setting">
-          <div class="setting-info">
-            <strong>Friend Requests</strong>
-            <span>Show notifications for friend requests.</span>
-          </div>
-          <div class="toggle on" onclick="toggleSetting(this)"></div>
-        </div>
-
-        <div class="setting">
-          <div class="setting-info">
-            <strong>Messages</strong>
-            <span>Show notifications for new messages.</span>
-          </div>
-          <div class="toggle on" onclick="toggleSetting(this)"></div>
-        </div>
-
-      </div>
-
-      <div class="settings-section">
-
-        <div class="settings-title">
-          About Nexa
-        </div>
-
-        <div class="setting">
-          <div class="setting-info">
-            <strong>Nexa</strong>
-            <span>Chat & Hangout · Offline Edition</span>
-          </div>
-          <span style="color:#666;font-size:12px">v1.0</span>
-        </div>
-
-      </div>
-
-    </div>
-  `;
+    `;
 }
+
+
+/* SETTINGS */
+
+function showSettings(){
+
+    content.innerHTML = `
+
+        <div class="page">
+
+            <div class="pageHeader">
+
+                <h1>Settings</h1>
+
+                <p>
+                    Customize your Nexa experience.
+                </p>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="sectionTitle">
+                    Appearance
+                </div>
+
+
+                <div class="setting">
+
+                    <div class="settingInfo">
+
+                        <strong>
+                            Dark Mode
+                        </strong>
+
+                        <span>
+                            Nexa's default dark appearance.
+                        </span>
+
+                    </div>
+
+                    <div
+                        class="toggle on"
+                        onclick="toggleSetting(this)">
+                    </div>
+
+                </div>
+
+
+                <div class="setting">
+
+                    <div class="settingInfo">
+
+                        <strong>
+                            Animations
+                        </strong>
+
+                        <span>
+                            Enable interface animations.
+                        </span>
+
+                    </div>
+
+                    <div
+                        class="toggle on"
+                        onclick="toggleSetting(this)">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="sectionTitle">
+                    Notifications
+                </div>
+
+
+                <div class="setting">
+
+                    <div class="settingInfo">
+
+                        <strong>
+                            Friend Requests
+                        </strong>
+
+                        <span>
+                            Show notifications for friend requests.
+                        </span>
+
+                    </div>
+
+                    <div
+                        class="toggle on"
+                        onclick="toggleSetting(this)">
+                    </div>
+
+                </div>
+
+
+                <div class="setting">
+
+                    <div class="settingInfo">
+
+                        <strong>
+                            Messages
+                        </strong>
+
+                        <span>
+                            Show notifications for new messages.
+                        </span>
+
+                    </div>
+
+                    <div
+                        class="toggle on"
+                        onclick="toggleSetting(this)">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="sectionTitle">
+                    About Nexa
+                </div>
+
+                <div class="setting">
+
+                    <div class="settingInfo">
+
+                        <strong>
+                            Nexa
+                        </strong>
+
+                        <span>
+                            Chat & Hangout · Offline Edition
+                        </span>
+
+                    </div>
+
+                    <span style="color:#666;font-size:12px">
+                        v1.0
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+}
+
 
 function toggleSetting(element){
 
-  element.classList.toggle("on");
+    element.classList.toggle("on");
 
-  showToast(
-    element.classList.contains("on")
-      ? "Setting enabled"
-      : "Setting disabled"
-  );
+    toast(
+        element.classList.contains("on")
+        ? "Setting enabled"
+        : "Setting disabled"
+    );
 }
 
-function navigate(page){
 
-  document.querySelectorAll(".nav-item")
-    .forEach(item=>{
-      item.classList.toggle(
-        "active",
-        item.dataset.page === page
-      );
-    });
+/* NAVIGATION */
 
-  const titles = {
-    home:"Home",
-    friends:"Friends",
-    chat:"Messages",
-    explore:"Explore",
-    profile:"My Profile",
-    settings:"Settings"
-  };
+function navigate(page,clickedElement){
 
-  pageTitle.textContent = titles[page] || "Nexa";
+    document
+        .querySelectorAll(".navItem")
+        .forEach(item => {
+            item.classList.remove("active");
+        });
 
-  if(page==="home") renderHome();
-  if(page==="friends") renderFriends();
-  if(page==="chat") renderChat();
-  if(page==="explore") renderExplore();
-  if(page==="profile") renderProfile();
-  if(page==="settings") renderSettings();
+    if(clickedElement){
+        clickedElement.classList.add("active");
+    }
+
+    const titles = {
+        home:"Home",
+        friends:"Friends",
+        messages:"Messages",
+        explore:"Explore",
+        profile:"My Profile",
+        settings:"Settings"
+    };
+
+    pageTitle.textContent = titles[page];
+
+
+    if(page === "home"){
+        showHome();
+    }
+
+    if(page === "friends"){
+        showFriends();
+    }
+
+    if(page === "messages"){
+        showMessages();
+    }
+
+    if(page === "explore"){
+        showExplore();
+    }
+
+    if(page === "profile"){
+        showProfile();
+    }
+
+    if(page === "settings"){
+        showSettings();
+    }
 }
 
-document.querySelectorAll(".nav-item")
-  .forEach(item=>{
-    item.addEventListener("click",()=>{
-      navigate(item.dataset.page);
-    });
-  });
+
+function navigateByName(page){
+
+    const item =
+        [...document.querySelectorAll(".navItem")]
+        .find(x =>
+            x.getAttribute("onclick")
+            .includes("'" + page + "'")
+        );
+
+    navigate(page,item);
+}
+
+
+/* PROFILE MODAL */
 
 function openProfile(){
-  document.getElementById("profileModal")
-    .classList.add("show");
+
+    document
+        .getElementById("profileModal")
+        .classList.add("show");
 }
 
+
 function closeProfile(event){
-  if(!event || event.target.id==="profileModal"){
-    document.getElementById("profileModal")
-      .classList.remove("show");
-  }
+
+    if(
+        !event ||
+        event.target.id === "profileModal"
+    ){
+
+        document
+            .getElementById("profileModal")
+            .classList.remove("show");
+
+    }
 }
+
+
+/* TOAST */
 
 let toastTimer;
 
-function showToast(text){
+function toast(message){
 
-  const toast = document.getElementById("toast");
+    const element =
+        document.getElementById("toast");
 
-  toast.textContent = text;
-  toast.classList.add("show");
+    element.textContent = message;
 
-  clearTimeout(toastTimer);
+    element.classList.add("show");
 
-  toastTimer = setTimeout(()=>{
-    toast.classList.remove("show");
-  },2500);
+    clearTimeout(toastTimer);
+
+    toastTimer = setTimeout(() => {
+
+        element.classList.remove("show");
+
+    },2200);
 }
 
-/* START */
-renderHome();
+
+/* START NEXA */
+
+showHome();
 
 </script>
 
 </body>
 </html>
-```
